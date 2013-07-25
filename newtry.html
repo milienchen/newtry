@@ -1,0 +1,41 @@
+ <html>
+  <head>
+  <meta charset="UTF-8">
+	<!--[if IE]>
+	<script src="https://github.com/douglascrockford/JSON-js/blob/master/json.js"></script>
+	<![endif]-->
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  </head>
+<body>
+<table border="1px" cellspace="10">
+	<tr>
+	<td>this is first table<table id="tb1" border="1px"></table></td>
+	<td>this is second table<table id="tb2" border="1px"></table></td>
+	</tr>
+</table>
+<script>
+var htmlstr='';
+for(var i=0,max=10;i<max;i++){
+	//jsonObject
+	var jsonObj = {pid:i,pname:('name_'+i),parray:[1,2,3,4,5,6]};
+	//tb1
+	htmlstr+= '<tr json="'+JSON.stringify(jsonObj)+'"';
+	htmlstr+= ' onclick="console.log($(this).parents().filter(\'table\').attr(\'id\'));';
+	htmlstr+= 'console.log($(this).attr(\'json\'));">';
+	htmlstr+= '<td>'+(jsonObj.pid+' '+jsonObj.pname )+'</td></tr>';
+	//tb2
+	var trobj = $('<tr>');	
+	trobj.attr('json',JSON.stringify(jsonObj));
+	trobj.bind("click", function() {
+	console.log($(this).parents().filter('table').attr('id'));
+	console.log($(this).attr('json'));
+	});
+	var tdobj = $("<td>").text(jsonObj.pid+' '+jsonObj.pname);
+	trobj.append(tdobj);
+	$('#tb2').append(trobj);
+}
+//tb1
+$('#tb1').html(htmlstr);
+</script>
+</body>
+</html>
