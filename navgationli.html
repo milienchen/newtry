@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" manifest="manifest.appcache">
+
+  <head>
+	
+<meta charset="UTF-8">
+
+	  <title>li</title>
+
+    <meta name="description" content="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!--[if IE]><link rel="shortcut icon" href="/public/favicon.ico"  type="image/x-icon" /><![endif]-->
+ 
+   <style>
+#navgationLi{
+position: relative;
+	overflow: hidden;
+	list-style: none;
+	float:none;
+	width: 400px;
+	height: 30px;
+	margin: 0;
+	padding: 0;
+}
+
+#navgationLi li {
+  float: left;
+
+}
+
+ul li.button{ 
+	background:#ccc;
+	width: 120px;
+    height: 30px;  
+    text-decoration:none; border:1px solid #000;
+}
+ul li.button:hover{ background:#999; }/*說明：display:block;這一行必須要加的，這樣才能塊狀顯示！*/
+ul li.lihide{display:none;}
+
+   </style>
+	<script src="jquery/jquery-1.9.1.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+	<!--http://code.jquery.com/jquery-1.9.1.js-->
+  </head>
+<body>
+	●LI不能寫死,要靠NOWINDEX動態載入LI 內容與點選事件<BR/>
+	●jquery的swiper左右滑動event要註冊在LI裡,不能寫在UL上<BR/>
+	●listCount nowindex li陣列要屬性在ul裡
+	<BR/>
+	<ul id="navgationLi">
+	  <LI id="li_1" class="button" ><a href="index.html">上市01</a></LI>
+	  <li id="li_2" class="button"><a href="works.html">上櫃02</a></li>
+	  <li id="li_3" class="button"><a href="video.html">個股03</a></li>
+	  <li id="li_4" class="button"><a href="video.html">興櫃04</a></li>
+	  <li id="li_5" class="button"><a href="video.html">期貨05</a></li>
+	</ul>
+	<span id="testSpan">00000000000000000</span>
+<script>
+ var nowindex=0;
+
+ function navigationControl(id_,showCount,moveCount){
+ 	var ul = {	
+ 		ini:function(){
+ 			var listCount = $('#'+id_+' li').length;
+ 			// liArray = $(ul).html().replace(/"/gi,"'").match(/<li.*?>.*?<\/li>/gi);
+ 			// for(var t in liArray){
+ 			// }
+ 			// console.log($(ul).html().replace('"',''));
+ 			// console.log($(ul).html().replace(/"/gi,"'").match(/<li.*?>.*?<\/li>/gi));
+ 			$('#'+id_).attr('listCount',listCount);
+ 			$('#'+id_).attr('nowindex',1);
+ 			$('#'+id_).attr('showCount',showCount);
+ 			$('#'+id_).attr('moveCount',moveCount);
+ 			this.addEvent(id_);	
+ 			this.showli(id_,1);	
+ 		},
+ 		addEvent: function(id_){
+ 			var self = id_;
+			$('#'+id_+' li').on('swiperight',function(){
+				console.log('right 0'+$('#'+self).attr('nowindex'));
+				var listCount = parseInt($('#'+id_).attr('listCount'));
+	 			var moveCount = parseInt($('#'+id_).attr('moveCount'));
+			    var nowindex_ = $('#'+id_).attr('nowindex')!=null ? parseInt($('#'+id_).attr('nowindex')) : 1;
+			    nowindex_ += moveCount;
+			    nowindex_ = nowindex_> (listCount-showCount+1) ? 1 : nowindex_;
+ 				$('#'+id_).attr('nowindex',nowindex_);
+ 				var exeul = ul;
+ 				exeul.showli(id_,nowindex_);
+ 				console.log('right ,nowindex_ '+nowindex_);
+			});
+			$('#'+id_+' li').on('swipeleft',function(){
+				var listCount = parseInt($('#'+id_).attr('listCount'));
+	 			var moveCount = parseInt($('#'+id_).attr('moveCount'));
+	 			var showCount = parseInt($('#'+id_).attr('showCount'));
+			    var nowindex_ = $('#'+id_).attr('nowindex')!=null ? parseInt($('#'+id_).attr('nowindex')) : 1;
+			    nowindex_ -= moveCount;
+			    nowindex_ = nowindex_<0 ? (listCount-(listCount%showCount)+1) : nowindex_;
+ 				$('#'+id_).attr('nowindex',nowindex_);
+ 				var exeul = ul;	
+ 				exeul.showli(id_,nowindex_);
+ 				console.log('left nowindex_'+nowindex_);	
+			});
+ 		},
+ 		showli:function(id_,nowindex_){
+	 		var ul = $('#'+id_);
+	 		var listCount = parseInt($('#'+id_).attr('listCount'));
+	 		var showcount = parseInt($('#'+id_).attr('showCount'));
+	 		$('#'+id_+' li').addClass('lihide');
+	 		console.log(id_);
+	 		for(var i = nowindex_-1,max =nowindex_+showcount-1;i<max;i++){
+	 			if (i<=listCount){$('#'+id_+' li').eq(i).removeClass('lihide');}
+	 		}
+
+ 		}
+ 	};
+ 	var exeul = ul;
+ 	exeul.ini();
+
+ 	var totalLiLength = $('#'+id_+' li').length;
+ 	var liDatas = new Array(totalLiLength);
+ 	var tempi =0;
+ 	$('#'+id_+' li').each(function(index_,object_){
+ 		liDatas[tempi] = $(this).innerHTML;
+ 		tempi++;
+ 	});
+
+ 	nowindex = $(ul).attr('nowindex')!=null ? parseInt($(ul).attr('nowindex')) : 0;
+ 	$(ul).attr('nowindex',nowindex);
+
+ 	if ($(ul).attr('nowindex')){nowindex = $(ul).attr('nowindex');}
+ }
+
+$('#lileft').click(function(){
+	nowindex--;
+	nowindex = nowindex<1 ? 5 : nowindex;
+	var templi = nowindex;
+	for(var i=1;i<6;i++){
+		templi++;
+		templi = templi>5 ? 1 :templi;
+		if (i<4){
+			$('li[id^=li_'+templi+']').removeClass('lihide');
+		}else{
+			$('li[id^=li_'+templi+']').addClass('lihide');
+		}
+	}
+});
+$('#liright').click(function(){
+	nowindex++;
+	nowindex = nowindex>5 ? 1 : nowindex;
+	var templi = nowindex;
+	for(var i=1;i<6;i++){
+		templi++;
+		templi = templi>5 ? 1 :templi;
+		if (i<4){
+			$('li[id^=li_'+templi+']').addClass('lishow').removeClass('lihide');
+		}else{
+			$('li[id^=li_'+templi+']').addClass('lihide').removeClass('lishow');
+		}
+	}
+});
+
+navigationControl('navgationLi',3,3);
+
+//$('#navgationLi').swipe(function(e, data) {
+//    console.log('type:' + data.type + ' deltaX:' + data.deltaX + ' deltaY:' + data.deltaY + ' distance:' + data.distance + ' delay:' + data.//delay+' direction:' + data.direction  );
+//});
+
+
+$('#testSpan').on('swiperight',function(){
+      console.log('right');
+});
+$('#testSpan').on('swipeleft',function(){
+      console.log('left');
+});
+</script>
+<br/>
+正則裡的[ ]表示為單一字元符合條件,其中-是表示ASII-CODE編碼順序,{ }用來定義出現次數<BR/>
+.*? GRTTY MODE 加一個問號表示尋找最小條件的符合資料<BR/>
+GROUP順序很重要<BR/>
+var group = "aaa".math(/(aaa)|(bbb)/gi), 回傳結果為group[0]=aaa,group[1]=undefined<BR/>
+var group = "bbb".math(/(aaa)|(bbb)/gi), 回傳結果為group[0]=undefined,group[1]=bbb<BR/>
+^行開頭,$行結尾
+</body>
+
+</html>
