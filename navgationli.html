@@ -64,7 +64,12 @@ ul li.lihide{display:none;}
 	<span id="testSpan">00000000000000000</span>
 <script>
  var nowindex=0;
-
+/*
+This is base on jquery mobile framework,be sure  incluse jquesry.js、jquery.mobile.js,and don't forget include css style by himself,you can change css style depend your design,but check the css object id same with the html document object id.
+css style [lihide] is decied the li show or hiedden,so don't change this at least.
+Doesn't support sub li(I never try it),so if your ul is sub li,Im not sure this is will show correctly.
+create by milienchen@hotmail.com,if has problem that you can mail to me,although I reply not instantly.
+*/
  function navigationControl(id_,showCount,moveCount){
  	var ul = {	
  		ini:function(){
