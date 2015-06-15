@@ -1,0 +1,118 @@
+ <html>
+  <head>
+  <meta charset="UTF-8">
+	<!--[if IE]><script src="http://code.jquery.com/jquery-1.9.1.min.js"></script><![endif]-->
+	<script src="jquery-1.9.1.min.js"></script>
+	<script src="jquery.xml2json.js"></script>
+	<title>jquery-1.9.1.min.js</title>
+	<style>
+		@bgcolor:#2FAC9B;
+@border-radius: 0px;
+@span-w-h: 15px;
+
+
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+*{margin:0; padding: 0; box-sizing: border-box;}
+/*body,html{
+	margin: 40px auto;
+	text-align: center;
+	background: #1c1c1d;
+}
+*{ color:#666;}
+*/
+span {
+display: inline-block;
+height: 15px;
+width: 15px;
+background: #2fac9b;
+border-radius: 0px;
+}
+
+.border-radius{border-radius: 500px;}
+
+*[id*="loader-"]{ margin-bottom: 50px;}
+//loop
+
+.generate-span3(5);
+.generate-span3(@n, @i: 1) when (@i =< @n) {
+	#loader-3 span:nth-child(@{i}){
+		animation:rotateX   2s (@i * 0.1s) infinite cubic-bezier(0.650, 0.030, 0.735, 0.045);
+
+  }
+  .generate-span3(@n, (@i + 1));
+}
+#loader-3 span:nth-child(1) {
+-webkit-animation: rotateX 2s 0.1s infinite cubic-bezier(0.65, 0.03, 0.735, 0.045);
+
+@keyframes scale{
+	0%{ transform:scale(0.0);}
+	25%{ transform:scale(0.9,0.9); background:lighten(@bgcolor, 30%) }
+	50%{ transform:scale(1,1); margin:0 3px; background:@bgcolor; }
+	100%{ transform:scale(0.0);}
+}
+
+
+@keyframes rotateY{
+	0%{ transform:rotateY(0deg)}
+	50%{ transform:rotateY(90deg); background:lighten(@bgcolor, 30%);  }
+	100%{ transform:rotateY(0deg)}
+}
+@keyframes rotateX{
+	0%{ transform:rotateX(0deg)}
+	50%{ transform:rotateX(90deg) scale(0.5,0.5); background:lighten(@bgcolor, 30%); }
+	100%{ transform:rotateX(0deg)}
+}
+
+@keyframes push{
+	0%{ transform:translateX(0px) scale(0.9,0.6)}
+	50%{ transform:translateY(-20px) scale(0.7,1.1); background:lighten(@bgcolor, 20%);  }
+	100%{ transform:translateX(0px) scale(0.9,0.6)}
+}
+
+@keyframes rotateZ{
+	0%{transform:rotateZ(-20deg)}
+	50%{ transform:rotateZ(20deg) scaleY(1.2);   background:lighten(@bgcolor, 20%);  }
+	100%{transform:rotateZ(-20deg)}
+}
+
+@keyframes cuve{
+	0%		{ transform:rotateY(-90deg) perspective(50px); background:darken(@bgcolor, 20%);}
+	50%		{ transform:rotateY(0deg); background:lighten(@bgcolor, 20%);  }
+	100%	{ transform:rotateY(90deg) perspective(50px); transform-origin:100% 50%; background:darken(@bgcolor, 20%);}
+}
+
+@keyframes temp{
+	0%		{}
+	50%		{ transform: scale(1,5);  background:darken(@bgcolor, 20%);}
+	100%	{}
+}
+
+.loopingClass (@index) when (@index > 0) {
+
+	// create the actual css selector, example will result in
+	// .myclass_30, .myclass_28, .... , .myclass_1
+	(~".myclass_@{index}") {
+		// your resulting css
+		my-property: -@index px;
+	}
+
+	// next iteration
+	.loopingClass(@index - 1);
+}
+
+// end the loop when index is 0
+.loopingClass (0) {}
+
+	</style>
+  </head>
+<body>
+
+<div id="loader-3" class=".generate-span3">
+		<span class=".generate-span3(5)"></span><span></span><span></span><span></span><span></span>
+	</div>
+<div id="cssTry" class="loopingClass">----</div>
+</body>
+</html>

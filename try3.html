@@ -1,0 +1,86 @@
+ <html>
+  <head>
+  	<meta charset="UTF-8">
+  	<title>jquery-1.8.3.min.js jqm-1.10.3 jqui-1.10.3</title>
+	<script src="jquery-1.8.3.min.js"></script>
+	<script src="jquery.xml2json.js"></script>
+	<script src="jquery.mobile.js"></script>
+	<script src="jquery-ui.js"></script>
+	<script>
+		function createTb(){
+			var htmlstr='';
+			for(var i=0,max=10;i<max;i++){
+				//jsonObject
+				var jsonObj = {pid:i,pname:('name_'+i),parray:[1,2,3,4,5,6]};
+				//tb1
+				htmlstr+= '<tr json="'+JSON.stringify(jsonObj)+'"';
+				htmlstr+= ' onclick="console.log($(this).parents().filter(\'table\').attr(\'id\'));';
+				htmlstr+= 'console.log($(this).attr(\'json\'));">';
+				htmlstr+= '<td>'+(jsonObj.pid+' '+jsonObj.pname )+'</td></tr>';
+				//tb2
+				var trobj = $('<tr>');	
+				trobj.attr('json',JSON.stringify(jsonObj));
+				trobj.bind("click", function() {
+				console.log($(this).parents().filter('table').attr('id'));
+				console.log($(this).attr('json'));
+				});
+				var tdobj = $("<td>").text(jsonObj.pid+' '+jsonObj.pname);
+				trobj.append(tdobj);
+				$('#tb2').append(trobj);
+			}
+			//tb1
+			$('#tb1').html(htmlstr);
+		}
+			var str='f120.445.4.';
+			var s = ' XXX .... XXX ... XXX'.replace(new RegExp("\\\.","g"),'=').replace(/\./mg,'=');	 
+			//console.log(s); //正則去除小數點.測試
+
+		    function stringformat(str_){
+		      var param_args = Array.prototype.slice.call(arguments, 1);
+		      return str_.replace(/{(\d+)}/gm, function(item_, index_){  return param_args[index_]; } );
+		 	}
+		   //console.log('字串stringformat{0}{1}...測試:'+stringformat("{0}xxx{1}yyy{2}","0","1","2"));
+
+		   $(document).ready(function(){
+		   		
+
+		   });
+		   function alertThis(this_){
+		   		alert($(this_).attr('json'));
+		   }
+		   var t=[];
+		   t.push([undefined,undefined,undefined]);
+		   t.push([undefined,undefined,undefined]);
+		   t.push([undefined,undefined,undefined]);
+		   console.log(t);
+		</script>
+  </head>
+	<body>
+		<div data-role="page">
+			<div data-role="content">
+				<table border="1px" cellspace="2" cellpading="2">
+					<tr>
+						<td><input type="button" id="btnCreateTB" value = "create table content" onclick="createTb();"></td>
+						<td><input type="button" id="btnRegularPoint" value = "stringformat" onclick=""></td>
+					</tr>
+				</table>
+				<table border="1px" cellspace="10">
+					<tr>
+					<td>this is first table<table id="tb1" border="1px"></table></td>
+					<td>this is second table<table id="tb2" border="1px"></table></td>
+					</tr>
+					<tr><td></td><td></td></tr>
+				</table>
+				<hr>
+				<table id="testB" json="{'id':'TXO','name':'台指選','strategy':'1_CBULL','month01':'201405','bs01':'B','cp01':'C','strikePrice01':'8700','month02':'201405','bs02':'S','cp02':'P','strikePrice02':'8700'}" onclick="alertThis(this);"><tr><td>test</td></tr></table>
+				<label for="bbb">Flip switch:</label>
+				<select id="bbb" name="bbb" data-ole="slider">
+					<option value="on">on</option>
+					<option value="off">off</option>
+				</select>
+			</div>
+		</div>
+		<span id="spanT" cssUDP="b,r,"></span>
+		<script>console.log($('#spanT').attr('2cssUDP'))</script>
+	</body>
+</html>
